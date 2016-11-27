@@ -39,11 +39,8 @@ public class TicModelTests {
         ticModel.placeMark(2,2);
         ticModel.placeMark(2,1);
         ticModel.placeMark(0,0);
-
         assertThat("There should not be a mark at (0,0)", ticModel.getBoard()[0][0], is(nullValue()));
-
         assertThat("Game should be won!", ticModel.isWon(), is(true));
-
         assertThat("No more moves should be allowed!", ticModel.placeMark(2,2), is(false));
         assertThat("No more moves should be allowed!", ticModel.placeMark(1,2), is(false));
     }
@@ -51,11 +48,9 @@ public class TicModelTests {
     @Test
     public void testCorrectMarks() {
         testTurns();
-
         assertThat("(0,0) should be a cross!", ticModel.getBoard()[0][0], is(Mark.CROSS));
         assertThat("(1,1) should be a circle!", ticModel.getBoard()[1][1], is(Mark.CIRCLE));
         assertThat("(2,2) should be a cross!", ticModel.getBoard()[2][2], is(Mark.CROSS));
-
     }
 
     @Test
@@ -67,18 +62,15 @@ public class TicModelTests {
         assertThat("Turn shouldn't switch when placement is invalid!",
                 ticModel.getCurrentMark(), is(currentMark));
         assertThat("Model.Mark should have been placed!", ticModel.placeMark(1, 1), is(true));
-
     }
 
     @Test
     public void testWinCrossesDiagonal() {
-
         ticModel.placeMark(0,0);
         ticModel.placeMark(0,2);
         ticModel.placeMark(1,1);
         ticModel.placeMark(0,1);
         ticModel.placeMark(2,2);
-
         assertThat("Game should be won by crosses!", ticModel.getWinner(), is(Mark.CROSS));
     }
 
@@ -89,7 +81,6 @@ public class TicModelTests {
         ticModel.placeMark(1,0);
         ticModel.placeMark(2,2);
         ticModel.placeMark(2,0);
-
         assertThat("Game should be won by crosses!", ticModel.getWinner(), is(Mark.CROSS));
     }
 
@@ -100,10 +91,8 @@ public class TicModelTests {
         ticModel.placeMark(1,1);
         ticModel.placeMark(2,2);
         ticModel.placeMark(2,1);
-
         assertThat("Game should be won by crosses!", ticModel.getWinner(), is(Mark.CROSS));
     }
-
 
     @Test
     public void testWinCrossesColumn() {
@@ -112,7 +101,6 @@ public class TicModelTests {
         ticModel.placeMark(0,0);
         ticModel.placeMark(2,2);
         ticModel.placeMark(0,2);
-
         assertThat("Game should be won by crosses!", ticModel.getWinner(), is(Mark.CROSS));
     }
 
@@ -124,7 +112,6 @@ public class TicModelTests {
         ticModel.placeMark(1,1);
         ticModel.placeMark(0,1);
         ticModel.placeMark(2,2);
-
         assertThat("Game should be won by circles!", ticModel.getWinner(), is(Mark.CIRCLE));
     }
 
