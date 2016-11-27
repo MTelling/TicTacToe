@@ -85,7 +85,7 @@ public class TicDrawingPanel extends JPanel {
     /**
      * Simply gives the user a winning dialog.
      */
-    public void displayWinner() {
+    void displayWinner() {
         String winningMessage = ticModel.getWinner().toString() + " has won!!";
         JOptionPane.showMessageDialog(this, winningMessage);
     }

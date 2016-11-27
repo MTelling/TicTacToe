@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
@@ -32,13 +33,16 @@ public class TicModelTests {
 
     @Test
     public void testNoMoreTurnsIfWon() {
-        ticModel.placeMark(0,0);
-        ticModel.placeMark(1,1);
         ticModel.placeMark(0,1);
+        ticModel.placeMark(1,2);
+        ticModel.placeMark(1,1);
+        ticModel.placeMark(2,2);
         ticModel.placeMark(2,1);
-        ticModel.placeMark(0,2);
+        ticModel.placeMark(0,0);
 
-        assertThat("Game should be won!", ticModel.getWinner(), is(Mark.CROSS));
+        assertThat("There should not be a mark at (0,0)", ticModel.getBoard()[0][0], is(nullValue()));
+
+        assertThat("Game should be won!", ticModel.isWon(), is(true));
 
         assertThat("No more moves should be allowed!", ticModel.placeMark(2,2), is(false));
         assertThat("No more moves should be allowed!", ticModel.placeMark(1,2), is(false));
@@ -68,79 +72,60 @@ public class TicModelTests {
 
     @Test
     public void testWinCrossesDiagonal() {
-        Pair[] diagonalCrosses = {
-                new Pair(0, 0),
-                new Pair(0,2),
-                new Pair(1,1),
-                new Pair(0,1),
-                new Pair(2,2)
-        };
 
-        for (Pair pair : diagonalCrosses) {
-            ticModel.placeMark(pair.x, pair.y);
-        }
+        ticModel.placeMark(0,0);
+        ticModel.placeMark(0,2);
+        ticModel.placeMark(1,1);
+        ticModel.placeMark(0,1);
+        ticModel.placeMark(2,2);
 
         assertThat("Game should be won by crosses!", ticModel.getWinner(), is(Mark.CROSS));
     }
 
     @Test
-    public void testWinCrossesRow() {
-        Pair[] midRow = {
-                new Pair(0, 1),
-                new Pair(0, 2),
-                new Pair(1, 1),
-                new Pair(2, 2),
-                new Pair(2, 1)
-        };
-
-        for (Pair pair : midRow) {
-            ticModel.placeMark(pair.x, pair.y);
-        }
+    public void testWinCrossesRow1() {
+        ticModel.placeMark(0,0);
+        ticModel.placeMark(0,2);
+        ticModel.placeMark(1,0);
+        ticModel.placeMark(2,2);
+        ticModel.placeMark(2,0);
 
         assertThat("Game should be won by crosses!", ticModel.getWinner(), is(Mark.CROSS));
     }
+
+    @Test
+    public void testWinCrosses2Row() {
+        ticModel.placeMark(0,1);
+        ticModel.placeMark(0,2);
+        ticModel.placeMark(1,1);
+        ticModel.placeMark(2,2);
+        ticModel.placeMark(2,1);
+
+        assertThat("Game should be won by crosses!", ticModel.getWinner(), is(Mark.CROSS));
+    }
+
 
     @Test
     public void testWinCrossesColumn() {
-        Pair[] midRow = {
-                new Pair(0, 1),
-                new Pair(1, 1),
-                new Pair(0, 0),
-                new Pair(2, 2),
-                new Pair(0, 2)
-        };
-
-        for (Pair pair : midRow) {
-            ticModel.placeMark(pair.x, pair.y);
-        }
+        ticModel.placeMark(0,1);
+        ticModel.placeMark(1,1);
+        ticModel.placeMark(0,0);
+        ticModel.placeMark(2,2);
+        ticModel.placeMark(0,2);
 
         assertThat("Game should be won by crosses!", ticModel.getWinner(), is(Mark.CROSS));
     }
 
     @Test
     public void testWinCirclesDiagonal() {
-        Pair[] diagonalCrosses = {
-                new Pair(1, 2),
-                new Pair(0, 0),
-                new Pair(0, 2),
-                new Pair(1, 1),
-                new Pair(0, 1),
-                new Pair(2, 2)
-        };
-
-        for (Pair pair : diagonalCrosses) {
-            ticModel.placeMark(pair.x, pair.y);
-        }
+        ticModel.placeMark(1,2);
+        ticModel.placeMark(0,0);
+        ticModel.placeMark(0,2);
+        ticModel.placeMark(1,1);
+        ticModel.placeMark(0,1);
+        ticModel.placeMark(2,2);
 
         assertThat("Game should be won by circles!", ticModel.getWinner(), is(Mark.CIRCLE));
     }
 
-}
-
-class Pair {
-    int x, y;
-    Pair(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
 }

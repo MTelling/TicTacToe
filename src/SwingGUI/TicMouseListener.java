@@ -15,7 +15,7 @@ public class TicMouseListener implements MouseListener {
     private TicModel ticModel;
     private TicDrawingPanel ticDrawingPanel;
 
-    public TicMouseListener (TicModel ticModel, TicDrawingPanel ticDrawingPanel) {
+    TicMouseListener (TicModel ticModel, TicDrawingPanel ticDrawingPanel) {
         this.ticModel = ticModel;
         this.ticDrawingPanel = ticDrawingPanel;
     }
@@ -30,19 +30,17 @@ public class TicMouseListener implements MouseListener {
         int x = e.getX() / Constants.FIELD_SIZE;
         int y = e.getY() / Constants.FIELD_SIZE;
 
-        boolean isPlaced = ticModel.placeMark(x, y);
+        ticModel.placeMark(x, y);
 
-        if (isPlaced) {
-            ticDrawingPanel.updateUI();
+        ticDrawingPanel.updateUI();
 
-            if (ticModel.isWon()) {
-                // Put winning dialog on event queue to prevent blocking.
-                // Then reset the board and update the ui.
-                EventQueue.invokeLater(() -> ticDrawingPanel.displayWinner());
-                EventQueue.invokeLater(() -> ticModel.init());
-                EventQueue.invokeLater(() -> ticDrawingPanel.updateUI());
-            }
+        if (ticModel.isWon()) {
+            // Put winning dialog on event queue to prevent blocking.
+            // Then reset the board and update the ui.
+            EventQueue.invokeLater(() -> ticDrawingPanel.displayWinner());
+            EventQueue.invokeLater(() -> ticModel.init());
         }
+
     }
 
     @Override

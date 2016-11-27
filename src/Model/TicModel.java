@@ -3,7 +3,7 @@ package Model;
 /**
  * Created by Morten on 26/11/2016.
  */
-public class TicModel implements ViewableTicModel {
+public class TicModel {
 
     // Board is represented
     private Mark[][] board = new Mark[3][3];
@@ -32,6 +32,7 @@ public class TicModel implements ViewableTicModel {
 
             // After each succesful move, check if the board is won.
             checkIfWon();
+
             return true;
         } else {
             return false;
@@ -41,27 +42,28 @@ public class TicModel implements ViewableTicModel {
     }
 
     private void checkIfWon() {
-        // First check all rows:
+        // First check all columns:
         for (int x = 0; x < 3; x++) {
             if (board[0][x] == board[1][x] && board[1][x] == board[2][x]) {
-                winner = board[0][x];
+                winner = (board[0][x] != null) ? board[0][x] : winner;
             }
         }
 
-        // Then check all columns
+        // Then check all rows
         for (int y = 0; y < 3; y++) {
             if (board[y][0] == board[y][1] && board[y][1] == board[y][2]) {
-                winner = board[y][0];
+                winner = (board[y][0] != null) ? board[y][0] : winner;
             }
         }
 
         // At last check the diagonal
         if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
-            winner = board[0][0];
+            winner = (board[0][0] != null) ? board[0][0] : winner;
+
         }
 
         if (board[0][2] == board[1][1] && board[1][1] == board[2][0]) {
-            winner = board[0][2];
+            winner = (board[0][2] != null) ? board[0][2] : winner;
         }
 
 
