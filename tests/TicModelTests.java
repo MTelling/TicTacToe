@@ -1,0 +1,146 @@
+import Model.Mark;
+import Model.TicModel;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+/**
+ * Created by Morten on 26/11/2016.
+ */
+public class TicModelTests {
+
+
+    private TicModel ticModel;
+
+    @Before
+    public void setUp() {
+        ticModel = new TicModel();
+    }
+
+    @Test
+    public void testTurns() {
+        assertThat("First mark should be cross!", ticModel.getCurrentMark(), is(Mark.CROSS));
+        ticModel.placeMark(0, 0);
+        assertThat("Second mark should be circle!", ticModel.getCurrentMark(), is(Mark.CIRCLE));
+        ticModel.placeMark(1, 1);
+        assertThat("Third mark should be cross again!", ticModel.getCurrentMark(), is(Mark.CROSS));
+        ticModel.placeMark(2, 2);
+        assertThat(ticModel.getCurrentMark(), is(Mark.CIRCLE));
+    }
+
+    @Test
+    public void testNoMoreTurnsIfWon() {
+        ticModel.placeMark(0,0);
+        ticModel.placeMark(1,1);
+        ticModel.placeMark(0,1);
+        ticModel.placeMark(2,1);
+        ticModel.placeMark(0,2);
+
+        assertThat("Game should be won!", ticModel.getWinner(), is(Mark.CROSS));
+
+        assertThat("No more moves should be allowed!", ticModel.placeMark(2,2), is(false));
+        assertThat("No more moves should be allowed!", ticModel.placeMark(1,2), is(false));
+    }
+
+    @Test
+    public void testCorrectMarks() {
+        testTurns();
+
+        assertThat("(0,0) should be a cross!", ticModel.getBoard()[0][0], is(Mark.CROSS));
+        assertThat("(1,1) should be a circle!", ticModel.getBoard()[1][1], is(Mark.CIRCLE));
+        assertThat("(2,2) should be a cross!", ticModel.getBoard()[2][2], is(Mark.CROSS));
+
+    }
+
+    @Test
+    public void testMultipleMarksSameLocation() {
+        assertThat("Model.Mark should have been placed!", ticModel.placeMark(0,0), is(true));
+        Mark currentMark = ticModel.getCurrentMark();
+        assertThat("A mark was overwritten!", ticModel.placeMark(0,0), is(false));
+        assertThat("A mark was overwritten!", ticModel.placeMark(0, 0), is(false));
+        assertThat("Turn shouldn't switch when placement is invalid!",
+                ticModel.getCurrentMark(), is(currentMark));
+        assertThat("Model.Mark should have been placed!", ticModel.placeMark(1, 1), is(true));
+
+    }
+
+    @Test
+    public void testWinCrossesDiagonal() {
+        Pair[] diagonalCrosses = {
+                new Pair(0, 0),
+                new Pair(0,2),
+                new Pair(1,1),
+                new Pair(0,1),
+                new Pair(2,2)
+        };
+
+        for (Pair pair : diagonalCrosses) {
+            ticModel.placeMark(pair.x, pair.y);
+        }
+
+        assertThat("Game should be won by crosses!", ticModel.getWinner(), is(Mark.CROSS));
+    }
+
+    @Test
+    public void testWinCrossesRow() {
+        Pair[] midRow = {
+                new Pair(0, 1),
+                new Pair(0, 2),
+                new Pair(1, 1),
+                new Pair(2, 2),
+                new Pair(2, 1)
+        };
+
+        for (Pair pair : midRow) {
+            ticModel.placeMark(pair.x, pair.y);
+        }
+
+        assertThat("Game should be won by crosses!", ticModel.getWinner(), is(Mark.CROSS));
+    }
+
+    @Test
+    public void testWinCrossesColumn() {
+        Pair[] midRow = {
+                new Pair(0, 1),
+                new Pair(1, 1),
+                new Pair(0, 0),
+                new Pair(2, 2),
+                new Pair(0, 2)
+        };
+
+        for (Pair pair : midRow) {
+            ticModel.placeMark(pair.x, pair.y);
+        }
+
+        assertThat("Game should be won by crosses!", ticModel.getWinner(), is(Mark.CROSS));
+    }
+
+    @Test
+    public void testWinCirclesDiagonal() {
+        Pair[] diagonalCrosses = {
+                new Pair(1, 2),
+                new Pair(0, 0),
+                new Pair(0, 2),
+                new Pair(1, 1),
+                new Pair(0, 1),
+                new Pair(2, 2)
+        };
+
+        for (Pair pair : diagonalCrosses) {
+            ticModel.placeMark(pair.x, pair.y);
+        }
+
+        assertThat("Game should be won by circles!", ticModel.getWinner(), is(Mark.CIRCLE));
+    }
+
+}
+
+class Pair {
+    int x, y;
+    Pair(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
