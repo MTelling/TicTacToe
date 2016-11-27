@@ -27,8 +27,8 @@ public class TicMouseListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        int x = e.getX() / (Constants.WINDOW_SIZE / 3);
-        int y = e.getY() / (Constants.WINDOW_SIZE / 3);
+        int x = e.getX() / Constants.FIELD_SIZE;
+        int y = e.getY() / Constants.FIELD_SIZE;
 
         boolean isPlaced = ticModel.placeMark(x, y);
 
